@@ -154,6 +154,7 @@ class wp_doi {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'post_submitbox_misc_actions', $plugin_admin, 'create_xml_button' );
 
 	}
 
@@ -170,6 +171,7 @@ class wp_doi {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_loaded', $plugin_public, 'get_post_xml' );
 
 	}
 

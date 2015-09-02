@@ -100,4 +100,20 @@ class wp_doi_Admin {
 
 	}
 
+
+	/**
+	 * Create an XML button on post admin screens
+	 *
+	 * @since    1.0.0
+	 */	
+	public function create_xml_button() {
+	  $postid = get_the_ID();
+	  // $url = plugins_url() . '/wp-doi/wp-doi.php?id=' . $postid;
+	  $url = get_site_url() . '/?xml=' . $postid;
+	  $html = '<div class="misc-pub-section" style="text-align: right;">';
+	  $html .= '<a class="button" href="' . $url . '" target="_blank">View Crossref XML</a>';
+	  $html .= '</div>';
+	  echo $html;
+	}
+
 }

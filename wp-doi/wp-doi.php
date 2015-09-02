@@ -34,22 +34,22 @@ if ( ! defined( 'WPINC' ) ) {
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wp-doi-activator.php
  */
-function activate_plugin_name() {
+function activate_wp_doi() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-doi-activator.php';
-	Plugin_Name_Activator::activate();
+	wp_doi_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-wp-doi-deactivator.php
  */
-function deactivate_plugin_name() {
+function deactivate_wp_doi() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-doi-deactivator.php';
-	Plugin_Name_Deactivator::deactivate();
+	wp_doi_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_plugin_name' );
-register_deactivation_hook( __FILE__, 'deactivate_plugin_name' );
+register_activation_hook( __FILE__, 'activate_wp_doi' );
+register_deactivation_hook( __FILE__, 'deactivate_wp_doi' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -66,10 +66,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wp-doi.php';
  *
  * @since    1.0.0
  */
-function run_plugin_name() {
+function run_wp_doi() {
 
-	$plugin = new Plugin_Name();
+	$plugin = new wp_doi();
 	$plugin->run();
 
 }
-run_plugin_name();
+run_wp_doi();

@@ -100,4 +100,52 @@ class wp_doi_Public {
 
 	}
 
+	/**
+	 * Show XML for a given post ID
+	 *
+	 * @since     1.0.0
+	 * @return    xml    XML for a given post.
+	 */
+	public function get_post_xml() {
+		if (isset($_GET['xml'])) { // Only execute if ?xml=[post id] is provided in the URL
+			
+			// Variable setup
+			$id = $_GET['xml'];
+			$postData = array(
+				'id' => $id,
+				'title' => get_the_title($id)
+			);
+
+			// print_r($postData);
+
+			$xml = new SimpleXMLElement('<xml/>');
+			$xml->addAttribute('version', '1.0'); 
+		   	
+			// <doi_batch>
+			$doi_batch = $xml->addChild('doi_batch');
+			$doi_batch->addAttribute('version', '4.3.4');
+			$doi_batch->addAttribute('xmlns', 'http://www.crossref.org/schema/4.3.4');
+			$doi_batch->addAttribute('xsi', 'xmlns', 'http://www.w3.org/2001/XMLSchema-instance');
+			// $doi_batch->addAttribute('xmlns:ai', 'http://www.crossref.org/AccessIndicators.xsd');
+			// $doi_batch->addAttribute('xmlns:fr', 'http://www.crossref.org/fundref.xsd');
+			// $doi_batch->addAttribute('xsi:schemaLocation', 'http://www.crossref.org/schema/4.3.4 http://www.crossref.org/schema/deposit/crossref4.3.4.xsd');
+
+			$head = $doi_batch->addChild('head');
+
+			// <body>
+			$body = $xml->addChild('body');
+			
+			$journal_article = $body->addChild('journal_article');
+			$journal_article->addAttribute('publication_type', 'full_text');
+
+			$titles = $journal_article->addChild('titles');
+			$titles->addChild('titles', $postData['title']);
+
+
+			Header('Content-type: text/xml');
+			print($xml->asXML());
+			exit;
+		}
+	}
+
 }
