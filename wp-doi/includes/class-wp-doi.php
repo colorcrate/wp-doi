@@ -97,6 +97,12 @@ class wp_doi {
 	private function load_dependencies() {
 
 		/**
+		 * Advanced Custom Fields is used for various admin and public facing functions
+		 * and must be loaded first.
+		 */
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . '/includes/acf/acf.php' );
+
+		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
@@ -155,6 +161,7 @@ class wp_doi {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'post_submitbox_misc_actions', $plugin_admin, 'create_xml_button' );
+		$this->loader->add_action( 'init', $plugin_admin, 'create_options_page' );
 
 	}
 

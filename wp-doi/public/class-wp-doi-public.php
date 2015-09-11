@@ -146,6 +146,11 @@ class wp_doi_Public {
 				'attachments' => $attachments
 			);
 
+			// Journal data array
+			$journalData = array(
+				'doi' => get_field('doi_prefix', 'option') . '/' . get_field('doi_suffix', 'option') . '.'
+			);
+
 
 			// Setup dom
 			$dom = new DOMDocument('1.0', 'utf-8');
@@ -170,7 +175,7 @@ class wp_doi_Public {
 
 				// <doi_batch_id>
 				// Generate DOI, supporting up to 999999 posts (ie. lets add zome zeros to the post ID)
-				$dom_doi_batch_id = $dom->createElement('doi_batch_id','10.12952/dta.elementa.' . $postData['doi']); // ** Should be changed to an option value
+				$dom_doi_batch_id = $dom->createElement('doi_batch_id', $journalData['doi'] . $postData['doi']);
 				$dom_head->appendChild($dom_doi_batch_id);
 
 				// <timestamp>
@@ -182,15 +187,15 @@ class wp_doi_Public {
 				$dom_head->appendChild($dom_depositor);
 
 					// <name>
-					$dom_depositor_name = $dom->createElement('name','BioOne'); // ** Should be changed to an option value
+					$dom_depositor_name = $dom->createElement('name', get_field('depositor_name', 'option'));
 					$dom_depositor->appendChild($dom_depositor_name);
 
 					// <email_address>
-					$dom_email_address = $dom->createElement('email_address','crossrefadmin@elementascience.org'); // ** Should be changed to an option value
+					$dom_email_address = $dom->createElement('email_address', get_field('depositor_email', 'option'));
 					$dom_depositor->appendChild($dom_email_address);
 
 				// <registrant>
-				$dom_registrant = $dom->createElement('registrant', 'BioOne'); // ** Should be changed to an option value
+				$dom_registrant = $dom->createElement('registrant', get_field('registrant_name', 'option'));
 				$dom_head->appendChild($dom_registrant);
 
 			// <body>
@@ -204,20 +209,20 @@ class wp_doi_Public {
 					// <journal_metadata>
 					$dom_journal_metadata = $dom->createElement('journal_metadata');
 					$dom_journal_metadata_language = $dom->createAttribute('language');
-					$dom_journal_metadata_language->value = 'en'; // ** Should be changed to an option value
+					$dom_journal_metadata_language->value = get_field('language', 'option');
 					$dom_journal_metadata->appendChild($dom_journal_metadata_language);
 					$dom_journal->appendChild($dom_journal_metadata);
 
 						// <full_title>
-						$dom_full_title = $dom->createElement('full_title', get_bloginfo('name'));
+						$dom_full_title = $dom->createElement('full_title', get_field('full_title', 'option'));
 						$dom_journal_metadata->appendChild($dom_full_title);
 
 						// <abbrev_title>
-						$dom_abbrev_title = $dom->createElement('abbrev_title', 'WP DOI'); // ** Should be changed to an option value
+						$dom_abbrev_title = $dom->createElement('abbrev_title', get_field('abbrev_title', 'option'));
 						$dom_journal_metadata->appendChild($dom_abbrev_title);
 
 						// <issn>
-						$dom_issn = $dom->createElement('issn', '2325-1026'); // ** Should be changed to an option value
+						$dom_issn = $dom->createElement('issn', get_field('issn', 'option'));
 						$dom_issn_media_type = $dom->createAttribute('media_type');
 						$dom_issn_media_type->value = 'electronic';
 						$dom_issn->appendChild($dom_issn_media_type);
@@ -317,7 +322,7 @@ class wp_doi_Public {
 						$dom_journal_article->appendChild($dom_publisher_item);
 
 							// <item_number>
-							$dom_item_number = $dom->createElement('item_number','10.12952/dta.elementa.' . $postData['doi']);
+							$dom_item_number = $dom->createElement('item_number', $journalData['doi'] . $postData['doi']);
 							$dom_publisher_item->appendChild($dom_item_number);
 
 						// <doi_data>
@@ -325,7 +330,7 @@ class wp_doi_Public {
 						$dom_journal_article->appendChild($dom_doi_data);
 
 							// <doi>
-							$dom_doi = $dom->createElement('doi','10.12952/dta.elementa.' . $postData['doi']);
+							$dom_doi = $dom->createElement('doi', $journalData['doi'] . $postData['doi']);
 							$dom_doi_data->appendChild($dom_doi);
 
 							// <timestamp>
@@ -360,7 +365,7 @@ class wp_doi_Public {
 								$dom_component->appendChild($dom_component_doi_data);
 
 									// <doi>
-									$dom_component_doi_data_doi = $dom->createElement('doi','10.12952/dta.elementa.' . $postData['doi'] . '.' . $postData['attachments'][$a]['doi']);
+									$dom_component_doi_data_doi = $dom->createElement('doi', $journalData['doi'] . $postData['doi'] . '.' . $postData['attachments'][$a]['doi']);
 									$dom_component_doi_data->appendChild($dom_component_doi_data_doi);
 
 									// <resource>
